@@ -1,13 +1,20 @@
 //create boxes
-
+let Game = 'ready'
 const GameBoard = ( ()=> {
      
     const spaces = [];
     const parentElement = document.querySelector('#board');
+    //add reset button
+    const reset  = document.createElement('button');
+    const body = document.querySelector('body');
+    body.appendChild(reset);
+    reset.textContent = "RESET";
+
     for(let i = 0; i < 9; i++){
     const newSpace = document.createElement('div');
     parentElement.appendChild(newSpace);
     newSpace.className = "space";
+    newSpace.style.userSelect = 'none'
     spaces[i]= {element: newSpace, val: "" };
 
     //position them
@@ -15,10 +22,26 @@ const GameBoard = ( ()=> {
     newSpace.style.gridColumnEnd = i - Math.floor(i/3)*3 + 1 ;
     newSpace.style.gridRowStart = Math.floor(i/3) + 1;
     newSpace.style.gridRowStart = Math.floor(i/3) + 1;
-        
+    
+
     }
 
+    //add reset action for each space
+    reset.addEventListener('click', function(){
+        Game = 'ready';
 
+    })
+    for(let i = 0; i < 9; i ++){
+        reset.addEventListener('click', function (){
+            let sp = spaces[i].element;
+            spaces[i].val = "";
+            sp.removeChild(sp.firstChild);
+            
+        });
+
+        
+    }
+    
 
     return spaces;
 })();
@@ -125,6 +148,9 @@ function checkIfWin(GameBoard, player1, player2){
 }
 
 
+
+
+
 //get players
 const name1 = prompt("Who is the first player?");
 const name2 = prompt("Who is the second player");
@@ -133,23 +159,45 @@ const player2 = new Player(name2, "O");
 let currentPlayer = player1;
 
 //Add click event and player alternation
+//And check for wins
+
+
+
 GameBoard.forEach( function(el){
     el.element.addEventListener('click', function (){
         if (el.val == ""){
-            el.val = currentPlayer.marker;
-            el.element.textContent = currentPlayer.marker;
-            let res = checkIfWin(GameBoard, player1, player2);
-            if (res != null){
-                alert(res.name + " won")
-                return res
+
+            if(Game == "ready"){
+                el.val = currentPlayer.marker;
+                let img = document.createElement('img');
+                if(currentPlayer.marker == "X"){
+                    img.src = "./ressources/cross.png";
+                    img.style.width = '90%';
+                }
+                else{
+                    img.src = "./ressources/decagon.png";
+                    img.style.width = '90%';
                 
+                }
+                
+                el.element.appendChild(img);
+                img.style.width = '90%';
+                let res = checkIfWin(GameBoard, player1, player2);
+                if (res != null){
+                    alert(res.name + " won")
+                    Game = "complete";
+                    return res
+                    
+                }
+                if(currentPlayer.name == player1.name){
+                    currentPlayer = player2;
+                }
+                else{
+                    currentPlayer = player1;
+                }
+
             }
-            if(currentPlayer.name == player1.name){
-                currentPlayer = player2;
-            }
-            else{
-                currentPlayer = player1;
-            }
+                
         }
         else{
             alert("Spot taken");
@@ -159,9 +207,6 @@ GameBoard.forEach( function(el){
     
 });
 
-//run game
-
-//return winner
 
 
 

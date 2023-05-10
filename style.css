@@ -5,24 +5,41 @@ html, body{
 
 }
 body {
-    background-color: yellow;
+    background-color: #e2e8f0;
     display: flex;
     justify-content: center;
     align-items: center;
+    flex-direction: column;
 }
 #board {
     
-    background-color: blue;
+    background-color: #111827;
     width: 600px;
     height: 600px;
     display: grid;
     gap: 5px;
     grid-template-columns: 1fr 1fr 1fr;
     grid-template-rows: 1fr 1fr 1fr;
+    text-align: center;
+    padding: 10px;
+    
 }
 
 .space {
     width: 100%;
     height: 100%;
-    background-color: pink;
+    background-color:#64748b;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+   
+
+}
+button{
+    margin: 10px;
+    background-color: #404040;
+    color: white;
+    border: none;
+    border-radius: 5px;
 }
